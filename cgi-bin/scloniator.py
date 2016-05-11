@@ -15,17 +15,18 @@ sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
 
 form = cgi.FieldStorage()
 text = form.getfirst("word")
-text = html.escape(text)
-
-morph = pymorphy2.MorphAnalyzer()
-parse = morph.parse(text)[0]
-parses = parse.lexeme
-
+words_arr = json.loads(text)
 words = []
+morph = pymorphy2.MorphAnalyzer()
 
-for item in parses:
-	words.append(item.word)
+for word in words_arr:
+  parse = morph.parse(word)[0]
+  parses = parse.lexeme
 
-words = json.dumps(words, False, False)
+  for item in parses:
+    words.append(item.word)
 
-print(words)
+
+words_res = json.dumps(words, False, False)
+
+print(words_res)
